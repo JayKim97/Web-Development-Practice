@@ -1,0 +1,28 @@
+/*
+div{
+    width:100px;
+    float:left; /*make divs go next to each othe
+}
+
+#one{
+    background-color: red;
+}
+#two{
+    background-color: purple;
+}
+*/
+
+img{
+    width: 30%;
+    float:left; /*remove white spaces*/
+    margin: 1.66%;
+}
+p{
+    font-family: 'Raleway';
+    font-size:23px;
+    font-weight: 800;
+    margin-left: 1.66%;
+    border-bottom: 2px solid #f1f1f1;
+    width:30%;
+    padding-bottom: 20px;
+}
