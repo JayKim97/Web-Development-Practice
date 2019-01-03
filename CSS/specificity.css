@@ -1,0 +1,23 @@
+/*
+this changes the li color as li is inheritance of ul
+spicificity priority from high priotiry to low
+id, class, type selector
+*/
+ul{ 
+    color: green;
+}
+
+li{
+    color: orange;
+}
+body{
+    color: red;
+}
+
+.highlight{
+    color:purple;
+}
+
+#override{
+    color: blue;
+}

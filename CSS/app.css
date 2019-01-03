@@ -1,0 +1,21 @@
+h1{
+    color: teal;
+    /*
+    border-color: purple;
+    border-width: 5px;
+    border-style: solid;
+    */
+    border: 2px solid orange;
+}
+h4{
+   background: rgb(255, 100, 80);
+}
+
+body{
+    /*
+    background: url(https://cdn11.bigcommerce.com/s-k88r0vkb4o/images/stencil/1024x1024/products/306/758/Gray_Woodgrain_Aluminum__47094.1494874535.jpg?c=2);
+    background-repeat: no-repeat;
+    background-size: cover;
+    */
+    background: pink;
+}

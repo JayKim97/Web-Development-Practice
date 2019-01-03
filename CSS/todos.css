@@ -1,0 +1,52 @@
+li{
+    border: 2px solid red;
+}
+
+#special{
+    background: yellow;
+}
+
+.completed{
+    text-decoration: line-through;
+}
+
+
+input[type="checkbox"] {
+    background: purple;
+}
+
+/*
+id can be only used once in html using # in css
+class can be used more using . in css
+*/
+
+/*
+Descendant selector
+
+li a {
+
+}
+
+adjacent selector
+
+h4 + ul { //chooses ul that is after h4
+
+}
+
+attribute selector
+
+a[href="https://www.google.com"]{ change all google link 
+
+}
+
+input[type="checkbox"]{
+    background: blue;
+}
+
+n-th of type
+//every nth element
+ul:nth-of-type(3){
+    background:
+}
+
+*/
