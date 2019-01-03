@@ -1,0 +1,25 @@
+div{
+    margin:20px auto;
+    width: 80%;
+    max-width: 700px;
+    border: 20px solid #bdc3c7;
+    font-family: 'Source Sans Pro';
+    padding: 20px;
+}
+
+h2{
+    color: #3498db;
+    text-transform: uppercase;
+}
+
+p:nth-of-type(1){
+    border-left: 3px solid #bdc3c7;
+    padding-left: 3px;
+}
+
+hr{
+    
+}
+
+/*date color: #3498db
+h2 color #2c3e50*/
