@@ -2,6 +2,14 @@ i.icon{
     font-size: 1em;
 }
 
-.container.main{
+.container.main {
     margin-top: 7em;
+}
+
+#headspace{
+    margin-top: 3em;
+}
+
+#delete{
+    display:inline;
 }
