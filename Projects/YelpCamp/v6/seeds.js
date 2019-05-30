@@ -21,7 +21,7 @@ var data = [
 ]
  
 function seedDB(){
-   //Remove all campgrounds
+//    Remove all campgrounds
    Campground.remove({}, function(err){
         if(err){
             console.log(err);
@@ -32,7 +32,7 @@ function seedDB(){
                 console.log(err);
             }
             console.log("removed comments!");
-             //add a few campgrounds
+            // add a few campgrounds
             data.forEach(function(seed){
                 Campground.create(seed, function(err, campground){
                     if(err){
