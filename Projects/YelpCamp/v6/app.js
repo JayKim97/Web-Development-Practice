@@ -2,9 +2,12 @@ const express   = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
-    Campground = require("./models/campground"),
-    seedDB =require("./seeds"),
-    Comment =require("./models/comment");
+    passport    = require("passport"),
+    LocalStrategy = require("passport-local"),
+    Campground  = require("./models/campground"),
+    seedDB      =require("./seeds"),
+    Comment     =require("./models/comment"),
+    User        = require("./models/user");
 
 
 mongoose.connect("mongodb://localhost:27017/yelp_camp", { useNewUrlParser: true });
@@ -13,27 +16,31 @@ app.set("view engine","ejs");
 app.use(express.static(__dirname + "/public"));
 seedDB();
 
+//===========================================
+// PASSPORT CONFIG
+app.use(require("express-session")({
+    secret: "7029sjsie983jjanmzcivurewoqmdfa",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+//============================================
 
-
-// Campground.create({
-//     name: "Hopeful Future", 
-//     image: "https://mikeputnamphoto.files.wordpress.com/2008/08/lower-meadow-campsite.jpg",
-//     description: "This is hopeful future right across depressing past"
-// }, (err,campground) =>{
-//     if(err){
-//         console.log(err);
-//     }
-//     else{
-//         console.log("created");
-//         console.log(campground);
-//     }
-// });
+app.use((req,res,next)=>{
+    res.locals.currentUser = req.user;
+    next();
+ });
 
 app.get("/",(req, res)=>{
     res.render("landing");
 });
 
 app.get("/campgrounds", (req,res)=>{
+    
     //get all campgrounds from DB
     Campground.find({},(err, allCampgrounds)=>{
         if(err){
@@ -84,7 +91,7 @@ app.get("/campgrounds/:id",(req,res)=>{
 // =================
 // COMMENTS ROUTE
 // =================
-app.get("/campgrounds/:id/comments/new",(req,res)=>{
+app.get("/campgrounds/:id/comments/new", isLoggedIn, (req,res)=>{
     Campground.findById(req.params.id,(err, campground)=>{
         if(err){
             console.log(err);
@@ -95,7 +102,7 @@ app.get("/campgrounds/:id/comments/new",(req,res)=>{
     });
 });
 
-app.post("/campgrounds/:id/comments",(req,res)=>{
+app.post("/campgrounds/:id/comments",isLoggedIn,(req,res)=>{
     //look up campground using ID
     Campground.findById(req.params.id,(err,campground)=>{
         if(err){
@@ -117,6 +124,53 @@ app.post("/campgrounds/:id/comments",(req,res)=>{
         }
     });
 });
+
+//=====================
+//authentication routes
+//=====================
+app.get("/register",(req,res)=>{
+    res.render("register");
+});
+
+app.post("/register",(req,res)=>{
+    var newUser = new User({username: req.body.username})
+    User.register(newUser, req.body.password,(err, user)=>{
+        if(err){
+            console.log(err);
+            return res.render("register");
+        }
+        passport.authenticate("local")(req, res, ()=>{
+            res.redirect("/campgrounds");
+        });
+    });
+});
+
+//LOGIN ROUTE
+app.get("/login",(req,res)=>{
+    res.render("login")
+});
+
+app.post("/login",passport.authenticate("local",
+    {
+        successRedirect: "/campgrounds",
+        failureRedirect: "/login"
+    }),(req,res)=>{
+    
+});
+
+//LOGOUT ROUTE
+app.get("/logout",(req,res)=>{
+    req.logout();
+    res.redirect("/campgrounds")
+});
+
+//MIDDLEWARE
+function isLoggedIn(req,res,next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+};
 
 app.listen(3000,()=>{
     console.log("The YelpCamp Server");
