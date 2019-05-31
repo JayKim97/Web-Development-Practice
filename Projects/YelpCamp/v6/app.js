@@ -7,6 +7,7 @@ const express   = require("express"),
     Campground  = require("./models/campground"),
     seedDB      =require("./seeds"),
     Comment     =require("./models/comment"),
+    methodOverride = require("method-override"),
     User        = require("./models/user");
 
 //REQUIRING ROUTES
@@ -22,6 +23,7 @@ mongoose.connect("mongodb://localhost:27017/yelp_camp", { useNewUrlParser: true 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine","ejs");
 app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method"));
 // seedDB(); //seed the database
 
 

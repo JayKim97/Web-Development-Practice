@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
- 
+
+
 const campgroundSchema = new mongoose.Schema({
    name: String,
    image: String,
@@ -18,5 +19,6 @@ const campgroundSchema = new mongoose.Schema({
       }
    ]
 });
+
  
 module.exports = mongoose.model("Campground", campgroundSchema);
