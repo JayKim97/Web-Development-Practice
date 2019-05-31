@@ -19,11 +19,12 @@ router.post("/",middleware.isLoggedIn,(req,res)=>{
    var name = req.body.name;
    var image = req.body.image;
    var desc = req.body.description;
+   var price = req.body.price;
    var author ={
        id: req.user._id,
        username: req.user.username
    };
-   var newCampground = {name: name, image: image, description: desc, author: author};
+   var newCampground = {name: name, image: image, description: desc, price: price,author: author};
    //create a new campground and save to DB
    Campground.create(newCampground,(err, newlyCreated)=>{
        if(err){
@@ -60,7 +61,12 @@ router.get("/:id",(req,res)=>{
 //EDIT CAMPGROUND ROUTE
 router.get("/:id/edit", middleware.checkCampgroundOwnership,(req,res)=>{
     Campground.findById(req.params.id,(err,foundCampground)=>{
-        res.render("campgrounds/edit",{campground: foundCampground});
+        if(err){
+            req.flash("error", "Campground not found");
+        }
+        else{
+            res.render("campgrounds/edit",{campground: foundCampground});
+        }
     });
 });
 //UPDATE CAMPGROUND ROUTE
@@ -68,6 +74,7 @@ router.put("/:id", middleware.checkCampgroundOwnership,(req,res)=>{
     //find and update the correct campground
     Campground.findByIdAndUpdate(req.params.id, req.body.campground,(err,updatedCampeground)=>{
         if(err){
+            
             res.redirect("/campgrounds");
         }
         else{
@@ -86,13 +93,15 @@ router.delete("/:id", middleware.checkCampgroundOwnership,(req,res)=>{
         // else{
         //     res.redirect("/campgrounds");
         // }
-        Comment.deleteMany( {_id: { $in: campgroundRemoved.comments } }, (err) => {
-            if (err) {
-                console.log(err);
-            }
-            res.redirect("/campgrounds");
-        });
-
+        else{
+            Comment.deleteMany( {_id: { $in: campgroundRemoved.comments } }, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+                res.redirect("/campgrounds");
+            });
+            req.flash("success", "Comment removed");
+        }
     });
 });
 
